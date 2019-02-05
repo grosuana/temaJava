@@ -1,36 +1,56 @@
-//here we handle inputs
-
+//here we handle inputs from cmd line; we break the input and we separate it into flags, Ifile an Ofile
+//these will be later handled
 
 import java.util.ArrayList;
 
-public class ArgumentParser { //clasa care se va ocupa de parsarea argumentelor
-	ArrayList<String> flags;
-	ArrayList<String> inputFiles;
-	ArrayList<String> outputFiles;
+public class ArgumentParser { //this will handle argument parsing
+	private ArrayList<String> flags = new ArrayList<String>();
+	private ArrayList<String> files = new ArrayList<String>();
+	private String[] legalFlags = {"-f", "-a"};
+	private ArgumentError error = new ArgumentError();
 
 	public ArgumentParser(String[] args){
 		int flagNumber = this.howManyFlags(args);
 		int argNumber = this.howManyArgs(args);
-
+		
 		if(flagNumber != 0){
-			this.flags = new ArrayList<String>();
+
+			if(!this.areFlagsFirst(args)) error.flagError();
+
 			for (int i = 0; i < flagNumber; i++ ) {
 				this.flags.add(args[i]);
 			}
+			if(!this.checkIfFlagsAvailable()) error.flagNonExistent();
 		}
-
-		if(flagNumber != 0){
-			this.inputFiles = new ArrayList<String>();
-			this.outputFiles = new ArrayList<String>();
-			
-			for (int i = 0; i < flagNumber; i++ ) {
-				this.flags.add(args[i]);
+	
+		if(argNumber != 0){
+			for(int i = 0; i < argNumber+flagNumber; i++){
+				if(args[i].charAt(0) == '-') continue;
+				this.files.add(args[i]);
 			}
 		}
 
 	}
 
-	private int howManyFlags(String[] args){
+	public ArrayList<String> getFlags(){
+		return this.flags;
+	}
+
+	public ArrayList<String> getFiles(){
+		return this.files;
+	}
+
+	
+	private boolean areFlagsFirst(String[] args){
+		int flagNum = howManyFlags(args);
+		boolean answ = true;
+		for (int i = 0; i<flagNum; i++ ) {
+			if(args[i].charAt(0) != '-') answ = false;
+		}
+		return answ;
+	}
+
+	private int howManyFlags(String[] args){ //counts how many flags did the program receive as param
 	
 		int flagNumber = 0;
 		for (int i = 0; i < args.length; i++) {
@@ -39,7 +59,7 @@ public class ArgumentParser { //clasa care se va ocupa de parsarea argumentelor
 		return flagNumber;
 	}
 
-	private int howManyArgs(String[] args){
+	private int howManyArgs(String[] args){ //counts how many filePaths it received as param
 	
 		int argNumber = 0;
 		for (int i = 0; i < args.length; i++) {
@@ -47,8 +67,20 @@ public class ArgumentParser { //clasa care se va ocupa de parsarea argumentelor
 		};
 		return argNumber;
 	}
+	private boolean checkIfFlagsAvailable(){
+		boolean answ = true;
+		boolean intermediate = false;
+		for (String givenFlag : this.getFlags()) {
+			intermediate = false;
+			for (String legalFlag : this.legalFlags) {
+				if(givenFlag.equals(legalFlag)) intermediate = true;
+			}
+			answ = answ && intermediate;
+		}
+		return answ;
+	}
 }
 
-interface File{
-	public void isPath();
+interface File{ //interface for the File class, we define it here since it methods are directly influenced by the functionalities described above
+	public void isPathValid();
 }
