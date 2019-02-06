@@ -10,4 +10,8 @@ class ArgumentError extends ErrorHandler { //defines specific error messages in 
 	public void flagNonExistent(){
 		throw new IllegalArgumentException("Flag non-existent. Use -h or --h for more information."); 
 	}
+
+	public void incompatible(){
+		throw new IllegalArgumentException("Cannot use both -m and -s. Use -h or --h for more information."); 
+	}
 }

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class ArgumentParser { //this will handle argument parsing
 	private ArrayList<String> flags = new ArrayList<String>();
 	private ArrayList<String> files = new ArrayList<String>();
-	private String[] legalFlags = {"-f", "-a"};
+	private String[] legalFlags = {"-m", "--multiple", "-s", "--single", "-g", "--gradient", "-h", "--help"};
 	private ArgumentError error = new ArgumentError();
 
 	public ArgumentParser(String[] args){
@@ -16,7 +16,7 @@ public class ArgumentParser { //this will handle argument parsing
 		if(flagNumber != 0){
 
 			if(!this.areFlagsFirst(args)) error.flagError();
-
+			if(hasBothSingleAndMultiple(args)) error.incompatible();
 			for (int i = 0; i < flagNumber; i++ ) {
 				this.flags.add(args[i]);
 			}
@@ -24,7 +24,7 @@ public class ArgumentParser { //this will handle argument parsing
 		}
 	
 		if(argNumber != 0){
-			for(int i = 0; i < argNumber+flagNumber; i++){
+			for(int i = 0; i < argNumber + flagNumber; i++){
 				if(args[i].charAt(0) == '-') continue;
 				this.files.add(args[i]);
 			}
@@ -40,6 +40,16 @@ public class ArgumentParser { //this will handle argument parsing
 		return this.files;
 	}
 
+	private boolean hasBothSingleAndMultiple(String[] args){
+		int flagNum = this.howManyFlags(args);
+		boolean single = false;
+		boolean multiple = false;
+		for (int i = 0; i < flagNum && args[i].charAt(0) == '-'; i++ ) {
+			if(args[i].charAt(1) == 's') single = true;
+			if(args[i].charAt(1) == 'm') multiple = true;
+		}
+		return single && multiple;
+	}
 	
 	private boolean areFlagsFirst(String[] args){
 		int flagNum = howManyFlags(args);
@@ -82,5 +92,7 @@ public class ArgumentParser { //this will handle argument parsing
 }
 
 interface File{ //interface for the File class, we define it here since it methods are directly influenced by the functionalities described above
-	public void isPathValid();
+	
+	public boolean isPathValid();
+	public boolean isPathImage();
 }
