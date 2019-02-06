@@ -14,4 +14,8 @@ class ArgumentError extends ErrorHandler { //defines specific error messages in 
 	public void incompatible(){
 		throw new IllegalArgumentException("Cannot use both -m and -s. Use -h or --h for more information."); 
 	}
+
+	public void inconsistent(){
+		throw new IllegalArgumentException("Path(s) given inconsistent with flag. Use -h or --h for more information."); 
+	}
 }
