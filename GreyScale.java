@@ -31,12 +31,12 @@ public class GreyScale {//here we compute the grayscale equivalent of 3x3 pixel 
                 int val22 = getGrayScale(image.getRGB(pixelX + 1, pixelY  + 1));//we turn gray the 3x3 square surrounding the pixel
 
                 int gx =  ((-1 * val00) + (0 * val01) + (1 * val02)) 
-                        + ((-2 * val10) + (0 * val11) + (2 * val12))
+                        + ((-1 * val10) + (0 * val11) + (1 * val12))
                         + ((-1 * val20) + (0 * val21) + (1 * val22));
                         												//we multiply the square by these two matrixes which will give 
-                int gy =  ((-1 * val00) + (-2 * val01) + (-1 * val02))  //us the probability the middle pixel belongs to a vertical/horizontal edge
+                int gy =  ((-1 * val00) + (-1 * val01) + (-1 * val02))  //us the probability the middle pixel belongs to a vertical/horizontal edge
                         + ((0 * val10) + (0 * val11) + (0 * val12))
-                        + ((1 * val20) + (2 * val21) + (1 * val22));
+                        + ((1 * val20) + (1 * val21) + (1 * val22));
 
                 double gval = Math.sqrt((gx * gx) + (gy * gy)); //the value is the module of ox,oy values
                 int g = (int) gval;

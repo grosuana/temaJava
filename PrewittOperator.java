@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class PrewittOperator {
 
-    public static void main(String[] args) throws IOException {//main starts
+    public static void main(String ... args) throws IOException {//main starts
       	System.out.println("Started");
       	long startTimeTotal = System.nanoTime(); //remembers when program launched in execution
       	int maxGrad = 0;

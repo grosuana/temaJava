@@ -9,7 +9,7 @@ public class ArgumentParser { //this will handle argument parsing from cmdline
 	private String[] legalFlags = {"-m", "--multiple", "-s", "--single", "-g", "--gradient", "-h", "--help", "-o", "--output"}; //list with all flags that can be used
 	private ArgumentError error = new ArgumentError(); //errors that we will throw
 
-	public ArgumentParser(String[] args){
+	public ArgumentParser(String ... args){
 		int flagNumber = this.howManyFlags(args);
 		int argNumber = this.howManyArgs(args);
 		
