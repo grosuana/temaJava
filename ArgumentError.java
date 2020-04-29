@@ -18,4 +18,7 @@ class ArgumentError extends ErrorHandler { //defines specific error messages in 
 	public void inconsistent(){
 		throw new IllegalArgumentException("Path(s) given inconsistent with flag. Use -h or --h for more information."); 
 	}
+	public void generalError(){
+		throw new IllegalArgumentException("Error parsing files. Use -h or --help for more information."); 
+	}
 }
